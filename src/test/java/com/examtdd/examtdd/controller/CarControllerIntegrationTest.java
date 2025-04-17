@@ -44,4 +44,30 @@ class CarControllerIntegrationTest {
     verify(carRentalService, times(1)).getAllCars();
   }
 
+  @Test
+  void rentCar_availableCar_shouldReturnTrue() throws Exception {
+    // Given
+    when(carRentalService.rentCar("ABC123")).thenReturn(true);
+
+    // When & Then
+    mockMvc.perform(post("/cars/rent/ABC123"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("true"));
+
+    verify(carRentalService, times(1)).rentCar("ABC123");
+  }
+
+  @Test
+  void rentCar_unavailableCar_shouldReturnFalse() throws Exception {
+    // Given
+    when(carRentalService.rentCar("XYZ789")).thenReturn(false);
+
+    // When & Then
+    mockMvc.perform(post("/cars/rent/XYZ789"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("false"));
+
+    verify(carRentalService, times(1)).rentCar("XYZ789");
+  }
+
 }
