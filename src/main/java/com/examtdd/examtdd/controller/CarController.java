@@ -28,4 +28,14 @@ public class CarController {
   public void returnCar(@PathVariable String registrationNumber) {
     carRentalService.returnCar(registrationNumber);
   }
+
+  @PostMapping("/add")
+  public boolean addCar(@RequestBody Car car) {
+    return carRentalService.addCar(car);
+  }
+
+  @GetMapping("/search")
+  public List<Car> searchCarsByModel(@RequestParam String model) {
+    return carRentalService.findCarsByModel(model);
+  }
 }
