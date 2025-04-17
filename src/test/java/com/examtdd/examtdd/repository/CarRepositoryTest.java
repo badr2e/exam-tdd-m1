@@ -37,4 +37,20 @@ class CarRepositoryTest {
     assertFalse(car.isPresent());
   }
 
+  @Test
+  void addCar_shouldAddCar() {
+    carRepository.addCar(new Car("DEF456", "Nissan", true));
+    assertEquals(3, carRepository.getAllCars().size());
+    assertTrue(carRepository.findByRegistrationNumber("DEF456").isPresent());
+  }
+
+  @Test
+  void updateCar_shouldUpdateExistingCar() {
+    Car car = carRepository.findByRegistrationNumber("ABC123").get();
+    car.setAvailable(false);
+    carRepository.updateCar(car);
+
+    Car updatedCar = carRepository.findByRegistrationNumber("ABC123").get();
+    assertFalse(updatedCar.isAvailable());
+  }
 }
