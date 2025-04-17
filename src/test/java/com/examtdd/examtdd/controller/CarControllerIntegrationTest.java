@@ -70,4 +70,15 @@ class CarControllerIntegrationTest {
     verify(carRentalService, times(1)).rentCar("XYZ789");
   }
 
+  @Test
+  void returnCar_shouldCallReturnCarService() throws Exception {
+    // Given
+    doNothing().when(carRentalService).returnCar("ABC123");
+
+    // When & Then
+    mockMvc.perform(post("/cars/return/ABC123"))
+        .andExpect(status().isOk());
+
+    verify(carRentalService, times(1)).returnCar("ABC123");
+  }
 }
