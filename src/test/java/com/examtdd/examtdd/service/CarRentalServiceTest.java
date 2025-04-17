@@ -87,4 +87,30 @@ class CarRentalServiceTest {
     assertFalse(result);
     verify(carRepository, never()).updateCar(any());
   }
+
+  @Test
+  void returnCar_rentedCar_shouldMakeCarAvailable() {
+    // Given
+    Car car = new Car("XYZ789", "Honda", false);
+    when(carRepository.findByRegistrationNumber("XYZ789")).thenReturn(Optional.of(car));
+
+    // When
+    carRentalService.returnCar("XYZ789");
+
+    // Then
+    assertTrue(car.isAvailable());
+    verify(carRepository, times(1)).updateCar(car);
+  }
+
+  @Test
+  void returnCar_nonExistingCar_shouldDoNothing() {
+    // Given
+    when(carRepository.findByRegistrationNumber("NONEXISTING")).thenReturn(Optional.empty());
+
+    // When
+    carRentalService.returnCar("NONEXISTING");
+
+    // Then
+    verify(carRepository, never()).updateCar(any());
+  }
 }
